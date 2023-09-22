@@ -1,0 +1,229 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+const socketio = require("socket.io");
+const fromatMessage = require("../public/javascripts/messages");
+const {
+    userJoin,
+    getCurrentUsers,
+    userLeave,
+    getRoomUsers,
+} = require("../public/javascripts/users");
+const Announcement = "공지";
+
+var app = require("../app");
+var debug = require("debug")("js-chat:server");
+const http = require("http");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+const io = socketio(server);
+
+io.on("connection", (socket) => {
+    socket.on("joinRoom", ({ username, room }) => {
+        const user = userJoin(socket.id, username, room);
+        socket.join(user.room);
+
+        socket.emit(
+            "message",
+            fromatMessage(Announcement, "ICT Chat에 오신 것을 환영합니다!!")
+        );
+
+        io.to(user.room).emit("roomUsers", {
+            room: user.room,
+            users: getRoomUsers(user.room),
+        });
+    });
+
+    socket.on("chatMessage", (msg) => {
+        const user = getCurrentUsers(socket.id);
+        io.to(user.room).emit("message", fromatMessage(user.username, msg));
+    });
+
+    socket.on("disconnect", () => {
+        const user = userLeave(socket.id);
+        if (user) {
+            io.to(user.room).emit(
+                "message",
+                fromatMessage(
+                    Announcement,
+                    `${user.username}님이 퇴장하였습니다.`
+                )
+            );
+        }
+    });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    debug("Listening on " + bind);
+}
+
+// OBS Studio의 가상 카메라 목록을 `가져오는 라우트
+app.get("/virtual-cameras", (req, res) => {
+    /* obs */
+    const OBSWebSocket = require("obs-websocket-js").default;
+
+    // OBS WebSocket 연결 설정
+    const obs = new OBSWebSocket();
+    obs.connect("ws://localhost:4455", "t9zXGMJdoYyXLKIl")
+        .then(() => {
+            console.log("Connected to OBS Studio");
+            obs.call("GetSceneItemList", { sceneName: "장면" })
+                .then((data) => {
+                    console.log(data);
+                    // const sceneList = data.scenes || [];
+                    // sceneList.filter((scene) => console.log(scene));
+                    // const virtualCameras = sceneList.filter((scene) =>
+                    //     scene.sceneName.startsWith("VLC source: ")
+                    // );
+                    // res.json({
+                    //     virtualCameras: virtualCameras.map((vc) => vc.name),
+                    // });
+                    // console.log(res);
+                })
+                .catch((err) => {
+                    console.error("Error getting virtual cameras:", err);
+                    res.status(500).json({
+                        error: "Failed to get virtual cameras",
+                    });
+                });
+        })
+        .catch((err) => {
+            console.error("Error connecting to OBS:", err);
+        });
+});
+
+// 새로운 가상 카메라 생성
+app.post("/create-virtual-camera", (req, res) => {
+    const cameraName = "test"; // 클라이언트에서 전달한 카메라 이름
+
+    /* obs */
+    const OBSWebSocket = require("obs-websocket-js").default;
+
+    // OBS WebSocket 연결 설정
+    const obs = new OBSWebSocket();
+    obs.connect("ws://localhost:4455", "t9zXGMJdoYyXLKIl")
+        .then(() => {
+            console.log("Connected to OBS Studio");
+            obs.call("CreateScene", { sceneName: `VLC source: ${cameraName}` })
+                .then(() => {
+                    res.json({
+                        message: `Virtual camera "${cameraName}" created successfully`,
+                    });
+                })
+                .catch((err) => {
+                    console.error("Error creating virtual camera:", err);
+                    res.status(500).json({
+                        error: "Failed to create virtual camera",
+                    });
+                });
+        })
+        .catch((err) => {
+            console.error("Error connecting to OBS:", err);
+        });
+});
+
+// 가상 카메라 활성화 또는 비활성화
+app.post("/toggle-virtual-camera", (req, res) => {
+    const enabled = true; // 클라이언트에서 전달한 활성화 여부 (true 또는 false)
+
+    const cameraName = "test"; // 클라이언트에서 전달한 카메라 이름
+
+    /* obs */
+    const OBSWebSocket = require("obs-websocket-js").default;
+
+    // OBS WebSocket 연결 설정
+    const obs = new OBSWebSocket();
+    obs.connect("ws://localhost:4455", "t9zXGMJdoYyXLKIl").then(() => {
+        console.log("Connected to OBS Studio");
+        obs.call("SetCurrentScene", {
+            "scene-name": `VLC source: ${cameraName}`,
+        })
+            .then(() => {
+                res.json({
+                    message: `Virtual camera "${cameraName}" ${
+                        enabled ? "enabled" : "disabled"
+                    }`,
+                });
+            })
+            .catch((err) => {
+                console.error("Error toggling virtual camera:", err);
+                res.status(500).json({
+                    error: "Failed to toggle virtual camera",
+                });
+            });
+    });
+});

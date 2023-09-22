@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./stylesheets/style.css">
+  <title>북적북적</title>
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1> 아이씨티피플</h1>
+      <a href="#" class="btn">나가기</a>
+    </header>
+    <hr class="chat_line">
+    <main class="chat-main" id="chatMain">
+        <div class="chat-sidebar">
+          <h3><i class="fas fa-comments"></i> 채팅방</h3>
+          <h2 id="room-name"></h2>
+          <h3><i class="fas fa-users"></i> 접속중</h3>
+          <ul id="users"></ul>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+    </main>
+    <hr class="chat_line">
+    <div class="chat-form-container">
+      <form id="chat-form">
+        <input
+          id="msg"
+          type="text"
+          placeholder="메세지를 입력하세요."
+          onfocus="this.placeholder=''" 
+					onblur="this.placeholder='메세지를 입력하세요.'"
+          required
+          autocomplete="off"
+        />
+        <button class="btn"><i class="fas fa-paper-plane"></i> 전송</button>
+      </form>
+    </div>
+  </div>
+
+
+  <button type="button" id="getVirtualCameras">카메라 목록</button>
+  <button type="button" id="createVirtualCamera">카메라 생성</button>
+  <video id="webcam" autoplay playsinline style="width: 100px; height: 100px;"></video>
+
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.11.0/qs.min.js" 
+    integrity="sha512-/l6vieC+YxaZywUhmqs++8uF9DeMvJE61ua5g+UK0TuHZ4TkTgB1Gm1n0NiA86uEOM9JJ6JUwyR0hboKO0fCng==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="javascripts/main.js"></script>
+</body>
+</html>

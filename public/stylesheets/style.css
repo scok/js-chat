@@ -1,0 +1,360 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+	--dark-color-a: #667aff;
+	--dark-color-b: #7386ff;
+	--light-color: #ababab;
+	--success-color: #5cb85c;
+	--error-color: #d9534f;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	background: #f6f6f7;
+	margin: 20px;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+.btn {
+	cursor: pointer;
+	padding: 5px 15px;
+	background: #3750de;
+	font-weight: 600;
+	color: #ffffff;
+	border: solid;
+	border-width: 2.5px;
+	border-color: #3750de;
+	font-size: 17px;
+}
+
+.btn:hover {
+	background: #132172;
+	color: #3750de;
+}
+
+/* login Page */
+
+.login_line{
+	border: none;
+	border-top: 1px solid #ccc;
+	margin: 10px 0;
+}
+
+.footer_container{
+	display: grid;
+	grid-template-columns: repeat(3,1fr);
+	justify-content: center;
+	align-items: center;
+}
+
+.register{
+	grid-area: 1 / 3 / 2 / 4;
+	text-align: center;
+}
+
+/* Chat Page */
+
+.chat-container {
+	max-width: 1100px;
+	background: #fff;
+	margin: 30px auto;
+	overflow: hidden;
+	box-shadow: 0 20px 34px rgba(170, 170, 170, 0.25), 0 16px 16px rgba(170, 170, 170, 0.25);
+}
+
+.chat-header {
+	background: #81c147;
+	color: #fff;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.chat-main {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	overflow-y: scroll;
+	height: 400px;
+}
+
+.chat_line{
+	border: none;
+	border-top: 1px solid #ccc;
+}
+
+.chat-sidebar {
+	background: #81c147;
+	color: #fff;
+	padding: 20px 20px 60px;
+	height: 400px;
+	overflow-y: scroll;
+}
+
+.chat-sidebar h2 {
+	font-size: 20px;
+	background: rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.chat-sidebar h3 {
+	margin-bottom: 15px;
+}
+
+.chat-sidebar ul li {
+	padding: 10px 0;
+}
+
+.chat-messages {
+	padding: 20px;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	height: 400px;
+}
+
+.chat-messages .message {
+	padding: 8px;
+	margin-bottom: 15px;
+	background-color: #ffca18;
+	border-radius: 5px;
+	box-shadow: 0 12px 26px rgba(170, 170, 170, 0.25), 0 8px 8px rgba(170, 170, 170, 0.25);
+	align-self: flex-end;
+	position: relative;
+    display: inline-block;
+	grid-area: msg;
+}
+
+.message::before {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 0 10px 10px;
+	border-color: transparent transparent transparent #ffca18;
+	right: -8px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.chat-messages .message .meta {
+	font-size: 16px;
+	font-weight: bold;
+	color: black;
+	margin-bottom: 7px;
+	display: inline-block;
+}
+
+.chat-messages .message .meta span {
+	font-size: 12px;
+	color: black;
+}
+
+.chat-messages .message .text {
+	color: black;
+	font-size: 14px;
+}
+
+.chatContainer{
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-items: end;
+	align-items: center;
+	gap: 10px;
+	margin-left: auto;
+}
+
+.my_chatbox{
+	grid-template-areas: "nameTime img" "msg img";
+}
+
+
+
+
+
+
+
+
+
+
+.other_chatbox{
+	grid-template-areas: "img nameTime" "img msg";
+}
+
+.nameTime{
+	grid-area: nameTime;
+}
+
+.nameTime .chat_time{
+	font-size: 0.7rem;
+	margin-right: 15px;
+}
+
+.avatar{
+	grid-area: img;
+}
+
+.avatar .avatar_img {
+	height: 55px;
+	width: 55px;
+	border-radius: 50%;
+	background-color: #5cb85c;
+	margin-left: 15px;
+}
+
+.chat-form-container {
+	padding: 20px 30px;
+	background-color: #81c147;
+}
+
+.chat-form-container form {
+	display: flex;
+}
+
+.chat-form-container input[type='text'] {
+	font-size: 16px;
+	padding: 5px;
+	height: 40px;
+	flex: 1;
+	border:  none;
+	outline: none;
+}
+
+/* Join Page */
+.join-container {
+	max-width: 500px;
+	margin: 80px auto;
+	color: #fff;
+	box-shadow: 0 20px 34px rgba(170, 170, 170, 0.25), 0 16px 16px rgba(170, 170, 170, 0.25);
+}
+
+.join-header {
+	text-align: center;
+	padding: 20px;
+	background: #1d3dca;
+}
+
+.join-main {
+	padding: 30px 40px;
+	background: #f6f6f7;
+}
+
+.join-main p {
+	margin-bottom: 20px;
+}
+
+.join-main .form-control {
+	margin-bottom: 20px;
+}
+
+.join-main label {
+	display: block;
+	margin-bottom: 5px;
+	color: #1d3dca;
+	font-weight: bold;
+}
+
+.join-main input[type='text'] {
+	font-size: 16px;
+	padding: 5px;
+	height: 40px;
+	width: 100%;
+	outline: none;
+	border: solid;
+	border-color: #1d3dca;
+	border-radius: 10px;
+	background: none;
+}
+
+.join-main select {
+	font-size: 16px;
+	padding: 5px;
+	height: 40px;
+	width: 100%;
+	outline: none;
+	border: solid;
+	border-color: #1d3dca;
+	border-radius: 10px;
+	background: none;
+}
+
+.join-main .btn {
+	margin-top: 20px;
+	width: 100%;
+	height: 40px;
+	font-weight: bold;
+	color: #ffffff;
+	border: solid;
+	border-width: 2.5px;
+	background: #1d3dca;
+	border-color: #1d3dca;
+	border-radius: 10px;
+}
+
+.join-main .btn:hover {
+	color: #1d3dca;
+	background: #ffffff;
+}
+
+@media (max-width: 700px) {
+	.chat-main {
+		display: block;
+	}
+
+	.chat-sidebar {
+		display: none;
+	}
+}
+
+
+/* 수직 스크롤바 스타일링 */
+::-webkit-scrollbar {
+	width: 10px; /* 스크롤바의 너비 설정 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+	background: #888; /* 스크롤바 썸의 배경색 설정 */
+	border-radius: 5px; /* 스크롤바 썸의 모서리를 둥글게 만듭니다. */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+	background: #555; /* 마우스를 올렸을 때 스크롤바 썸의 배경색 변경 */
+  }
+  
+  /* 수평 스크롤바 스타일링 */
+  ::-webkit-scrollbar-horizontal {
+	height: 10px; /* 수평 스크롤바의 높이 설정 */
+  }
+  
+  /* 수평 스크롤바 썸 스타일링 */
+  ::-webkit-scrollbar-thumb:horizontal {
+	background: #888; /* 수평 스크롤바 썸의 배경색 설정 */
+	border-radius: 5px; /* 수평 스크롤바 썸의 모서리를 둥글게 만듭니다. */
+  }
